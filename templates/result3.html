@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Youtube字幕下載</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="../static/css/style.css" type="text/css" media="all"> -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="container-fluid padding-tb">
+        <div class="container-fluid row">
+          <div class="col-8">
+            <font color="red"><h1>網址有誤!</h1></font></br>
+            <font color="red"><h1>請輸入正確的YouTube影片網址!</h1></font></br>
+          </div>
+          <div class="col-4">
+            <a class="btn btn-secondary btn-sm float-right" href="{{ url_for('go_home') }}"><h3>回首頁</h3></a>
+          </div>  
+       </div>
+      </div>
+    </div>
+  
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+
+</body>
+</html>

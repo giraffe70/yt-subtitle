@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!--viewport（檢視區）：瀏覽網頁時瀏覽器顯示畫面內容的區域。-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Youtube字幕下載</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="../static/css/style.css" type="text/css" media="all"> -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ url_for('static', filename='css/coming-soon.min.css') }}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div class="container-fluid padding-tb">
+      <div class="container-fluid row">
+        <div class="col-8">
+          <font color="Blue"><h2>YouTube字幕下載</h2></font></br></br>
+        </div>
+        <div class="col-4">
+          <a class="btn btn-secondary btn-sm float-right" href="{{ url_for('go_home') }}"><h3>回首頁</h3></a>
+        </div>
+        <div class="col-12 mb-3">
+          <div class="col-12">
+            <form action="/download/" method="POST">
+              <h5 class="mb-3">【影片標題】：{{title}}</h5>
+              <h5 class="mb-3">【影片網址】：{{web_url}}</h5>
+              <h5 class="mb-3">【可下載的字幕語言】：{{cc_list_str}}</h5>
+            </form>
+          </div>
+          </br></br>
+          <div class="col-12">
+              <font color="Red"><h5>Note：請選擇字幕語言，若未選擇，會下載所有提供的字幕語言。 </h5></font>
+          </div>
+          <div class="container-fluid group">
+              <form action="/download/" method="POST">
+                <label><h5>Select Language：</h5></label>
+                <select id="select_language"  name="cc_type">
+                  <option value="All" checked>All</option>
+                  {% for lang in cc_list %}
+                    <option value="{{ lang }}">{{ lang }}</option>
+                  {% endfor %}
+                </select>
+                <input type="hidden" name="web_url" value="{{ web_url }}"> 
+                <input type="hidden" name="cc_list" value="{{ cc_list }}">
+                <input type="hidden" name="cc_default" value="{{ cc_default }}"> 
+                <button type="submit" class="btn btn-success btn-sm" >Download</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  
+</body>
+</html>
+  
+  

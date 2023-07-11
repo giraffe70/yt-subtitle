@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Youtube字幕下載</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="../static/css/coming-soon.min.css" type="text/css"-->
+  <link href="{{ url_for('static', filename='css/coming-soon.min.css') }}" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+  <div class="masthead">
+    <div class="masthead-bg"></div>
+    <div class="row h-100">
+        <div class="col-12 my-auto">
+          <div class="masthead-content text-white">
+            <h2 class="mb-3">YouTube 字幕下載</h2><br/><br/>
+            <h5 class="mb-5">Note：若要下載字幕，影片本身須有提供CC字幕! </h5>
+            <div class="input-group-newsletter">
+              <form action="/" method="post">
+                <label><h6>請在下方貼上YouTube影片網址：</h6></label><br>
+                <textarea name="url" placeholder="Please input YouTube video link: " cols="60" rows="2"></textarea><br><br>
+                <div class="d-grid gap-2 d-md-block">
+                  <button type="submit" class="btn btn-light btn-sm" >Start</button>
+                  <button type="reset" class="btn btn-light btn-sm ml-3">Reset</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- <div class="social-icons">
+    <ul class="list-unstyled text-center mb-0">
+      <li class="list-unstyled-item">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </li>
+      <li class="list-unstyled-item">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+      </li>
+    </ul>
+  </div> -->
+
+    <!-- Contact-->
+    <section class="page-section" id="contact">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center mb-5 mb-lg-0">
+            <hr class="divider my-4" />
+              <h3 class="mt-0">Let's Get In Touch!</h3>
+              <hr class="divider my-4" />
+              <p class="text-muted mb-5">Welcome to contact me, if you have any probrom!</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
+              <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
+              <div>0800-000-000</div>
+          </div>
+          <div class="col-lg-4 mr-auto text-center">
+              <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
+              <!-- Make sure to change the email address in BOTH the anchor text and the link target below!-->
+              <a class="d-block" href="mailto:zhuqilin500@gmail.com">zhuqilin500@gmail.com</a>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- Footer-->
+  <footer class="bg-light py-5">
+    <div class="container"><div class="small text-center text-muted">Copyright © 2021 - Bill.CL Chu</div></div>
+  </footer>
+  
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+
+</body>
+</html>
