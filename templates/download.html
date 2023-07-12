@@ -25,12 +25,12 @@
             <form action="/download/" method="POST">
               <h5 class="mb-3">【影片標題】：{{title}}</h5>
               <h5 class="mb-3">【影片網址】：{{web_url}}</h5>
-              <h5 class="mb-3">【可下載的字幕語言】：{{cc_list_str}}</h5>
+              <h5 class="mb-3">【字幕語言】：{{cc_list_str}}</h5>
             </form>
           </div>
           </br></br>
           <div class="col-12">
-              <font color="Red"><h5>Note：請選擇字幕語言，若未選擇，會下載所有提供的字幕語言。 </h5></font>
+              <font color="Red"><h5>Note：請選擇欲下載的字幕語言，若未選擇，會下載影片提供的所有字幕語言。 </h5></font>
           </div>
           <div class="container-fluid group">
               <form action="/download/" method="POST">
@@ -43,7 +43,6 @@
                 </select>
                 <input type="hidden" name="web_url" value="{{ web_url }}"> 
                 <input type="hidden" name="cc_list" value="{{ cc_list }}">
-                <input type="hidden" name="cc_default" value="{{ cc_default }}"> 
                 <button type="submit" class="btn btn-success btn-sm" >Download</button>
               </form>
           </div>
