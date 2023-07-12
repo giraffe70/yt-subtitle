@@ -1,11 +1,37 @@
 #!flask/bin/python
-from flask import Flask, request, render_template, Response, send_file
-import requests
-from bs4 import BeautifulSoup
-import re
+from flask import Flask, render_template, request, Response
 from youtube_transcript_api import YouTubeTranscriptApi
+from bs4 import BeautifulSoup
+import requests
+import re
 import zipfile
 import io
+
+#  Retrieve the titles of YouTube videos.
+def get_video_info(url):
+    soup = BeautifulSoup(requests.get(url).text, 'html.parser')
+    title = soup.title.string
+    title = title.strip("- YouTube")
+    return title.strip()
+
+# Shorten the text and remove any characters not allowed in the file.
+def clean_title(title):
+    # Remove "|", "｜" and everything follows it
+    title = re.split('[|｜]', title)[0]
+    # Remove or Replace characters that are not allowed in file names. 
+    title = (title.replace("?", "？")
+                 .replace(":", " - ")
+                 .replace("\"", "\'\'")
+                 .replace("*", "")
+                 .replace("/", " ")
+                 .replace("<", "")
+                 .replace(">", "")
+                 .replace("【", "[")
+                 .replace("】", "]") )
+    # Finally, strip leading/trailing white spaces
+    title = title.strip()
+    return title
+
 
 app = Flask(__name__)
 
@@ -13,31 +39,6 @@ app = Flask(__name__)
 @app.route('/')  # ['POST','GET'])
 def go_home():
     return render_template('index.html')
-
-
-#  Retrieve the titles of YouTube videos.
-def get_video_info(url):
-    soup = BeautifulSoup(requests.get(url).text, 'html.parser')
-    title = soup.title.string
-    return title
-
-# Shorten the text and remove any characters not allowed in the file.
-def clean_title(title):
-    # Remove "feat"、"ft" and everything follows it
-    title = re.split('feat|ft|YouTube|Youtube', title, flags=re.IGNORECASE)[0]
-    # Remove "|", "｜", "-" and everything follows it
-    title = re.split('[|｜-]', title)[0]
-    # Remove or Replace characters that are not allowed in file names. 
-    title = (title.replace("?", "？")
-                 .replace("/", " ")
-                 .replace(":", " -")
-                 .replace("*", "")
-                 .replace("<", "")
-                 .replace(">", ""))
-    # Finally, strip leading/trailing white spaces
-    title = title.strip()
-    return title
-
 
 # 在index.html按下submit時，會取得前端傳來的url，並回傳結果
 @app.route('/', methods=['GET','POST'])
@@ -85,9 +86,7 @@ def submit():
         # print("Languages: ", cc_type_list)
 
         cc_list_str = "; ".join(cc_type_list)
-        cc_default = str(cc_type_list[0])
-
-        return render_template('download.html', title=video_title, web_url=url,  cc_list=cc_type_list, cc_list_str=cc_list_str, cc_default=cc_default)
+        return render_template('download.html', title=video_title, web_url=url,  cc_list=cc_type_list, cc_list_str=cc_list_str)
 
 
 # 列出所有可供下載的字幕讓使用者選擇
@@ -99,9 +98,11 @@ def download():
     cc_type = request.form.get('cc_type')  # Get the selected language from the form.
     cc_list_str = request.form.get('cc_list')
     cc_list = eval(cc_list_str)
+    cc_language = "; ".join(cc_list)  # output the languages
 
     # Download the selected language subtitles.
     if (cc_type != 'All') or (cc_type == 'All' and len(cc_list)==1):
+        # The selection is 'All', but only one language provided.
         if cc_type == 'All':
             cc_type = cc_list[0] 
         try:
@@ -112,8 +113,8 @@ def download():
             return render_template('result4.html', title=video_title, web_url=url)
         text_all = ""
         text_subtitle = " \n".join([sub['text'] for sub in subtitle])
-        text_all = text_all + f"Title: {video_title}\nUrl: {url}\n\n" 
-        text_all = text_all + text_subtitle + "\n\n----------\n"
+        text_all = text_all + f"【影片標題】: {video_title}\n【影片網址】: {url}\n【字幕語言】: {cc_language}\n\n"
+        text_all = text_all + "【字幕】: \n\n" + text_subtitle + "\n\n----------\n"
         # ===== download the file =====
         title = clean_title(video_title)
         file_name = f'{title}_{cc_type}.txt'
@@ -121,8 +122,8 @@ def download():
         #     file.write(text_all)
         response = Response(text_all, mimetype='text/csv')
         response.headers["Content-Disposition"] = f"attachment; filename={file_name.encode().decode('latin-1')}"
-        # ============================= 
         return response
+        # ============================= 
         # return render_template('result.html', title=video_title, web_url=url, subtitle_all=text_subtitle, cc_type=cc_type)
     
     # Download subtitles for all languages.
@@ -139,8 +140,8 @@ def download():
                     continue
                 text_all = ""
                 text_subtitle = " \n".join([sub['text'] for sub in subtitle])
-                text_all = text_all + f"Title: {video_title}\nUrl: {url}\n\n"
-                text_all = text_all + text_subtitle + "\n\n----------\n"
+                text_all = text_all + f"【影片標題】: {video_title}\n【影片網址】: {url}\n【字幕語言】: {cc_language}\n\n" 
+                text_all = text_all + "【字幕】: \n\n" + text_subtitle + "\n\n----------\n"
                 # Add the file to the ZIP
                 title = clean_title(video_title)
                 file_name = f'{title}_{cc}.txt'
